@@ -2,22 +2,65 @@
 
 {% block content %}
 
-<h2> Home </h2>
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</style>
 
-<div>
 
-    <a href="{% url 'create-room' %}">Create Room</a>
+<div class="home-container">
 
     <div>
-        {% for room in rooms %}
+        <h3>Ligi</h3>
+        <hr>
+
             <div>
-                <span>@{{room.host.username}}</span>
-                <h5>{{room.id}}  --  <a href="{% url 'room' room.id%}">{{room.name}}</a></h5>
-                <small>{{room.topic.name}}</small>
+                <a href="{% url 'home'%}">Wszytkie pokoje</a>
+            </div>
+
+        {% for topic in topics %}
+            <div>
+                <a href="{% url 'home'%}?q={{topic.name}}">{{topic.name}}</a>
             </div>
 
         {% endfor %}
     </div>
+
+    <div>
+        {% if room_count == 0 %}
+        <h5>Brak pokoi</h5>
+
+        {% elif room_count == 1 %}
+        <h5>{{room_count}} dostępny pokój</h5>
+
+        {% elif 2 <= room_count < 5 %}
+        <h5>{{room_count}} dostępne pokoje</h5>
+
+        {% else %}
+        <h4>{{room_count}} dostępnych pokoi</h4>
+
+        {% endif %}
+
+        <a href="{% url 'create-room' %}">Stwórz pokój</a>
+
+        <div>
+            {% for room in rooms %}
+                <div>
+                    <a href="{% url 'update-room' room.id %}">Edytuj</a>
+                    <a href="{% url 'delete-room' room.id %}">Usuń</a>
+                    <span>@{{room.host.username}}</span>
+                    <h5>{{room.id}}  --  <a href="{% url 'room' room.id%}">{{room.name}}</a></h5>
+                    <small>{{room.topic.name}}</small>
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
+
 </div>
 
 {% endblock content %}
