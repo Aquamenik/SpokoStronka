@@ -4,7 +4,12 @@
 
 <from method="GET" action="{% url 'home' %}">
     <input type="text" name="q" placeholder="Szukaj pokoi.."/>
-
 </from>
 
+{% if request.user.is_authenticated %}
+<p>Cześć {{request.user}}!</p>
+<a href="{% url 'logout' %}">Wyloguj sie</a>
+{% else %}
+<a href="{% url 'login' %}">Zaloguj</a>
+{% endif %}
 <hr>
